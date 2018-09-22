@@ -62,7 +62,7 @@ function watchBuilder(yargs) {
     yargs.option('includeNodeModules', {
         describe: 'watch the file change in node_modules folder',
         type: 'boolean',
-        default: false,
+        default: true,
     });
 }
 
