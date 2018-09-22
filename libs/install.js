@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const utils = require('./utils');
 const cfgFile = require('./cfgFile');
 const pkgUtils = require('./pkgUtils');
+const { copyEntireDirectory } = require('./fsUtils');
 
 function validPkgFiles(pkgDirPath) {
     return pkgUtils.parsePackageJSON(pkgDirPath)
@@ -20,13 +21,19 @@ function installDir(relativePath) {
     const dirPath = path.resolve(relativePath);
 
     if (!fs.existsSync(dirPath)) {
-        throw new Error('directory is not existed, plz check the path');
+        return Promise.reject(new Error('directory is not existed, plz check the path'));
     }
 
     return validPkgFiles(dirPath)
-        .then((pkgDirPath) => {
-            cfgFile.writeDependency(pkgDirPath);
-        })
+        .then(pkgDirPath => Promise.all([
+            Promise.resolve(pkgDirPath),
+            cfgFile.getPkgName(pkgDirPath),
+        ]))
+        .then(([pkgDirPath, pkgName]) => Promise.all([
+            Promise.resolve(pkgDirPath),
+            Promise.resolve(pkgName),
+            cfgFile.writeDependency(pkgDirPath, pkgName),
+        ]))
         .catch((e) => {
             console.error(chalk.red(`validate package failed, because of ${e.message}`), e);
             throw new Error('package files is not valied, please check the package.json or main file');
@@ -38,18 +45,15 @@ function installPkg(pkgName) {
     const pkgPath = path.resolve(globalNodeModulePath, pkgName);
 
     if (!fs.existsSync(pkgPath)) {
-        throw new Error('package is not existed, plz use "npm link pkgName" first, or install with directory');
+        return Promise.reject(new Error('package is not existed, plz use "npm link pkgName" first, or install with directory'));
     }
 
-    console.log('validate package');
     return validPkgFiles(pkgPath)
-        .then((pkgDirPath) => {
-            console.log('start write dependence');
-            cfgFile.writeDependency(pkgDirPath, pkgName)
-                .then(() => {
-                    console.log('write success');
-                });
-        })
+        .then(pkgDirPath => Promise.all([
+            Promise.resolve(pkgDirPath),
+            Promise.resolve(pkgName),
+            cfgFile.writeDependency(pkgDirPath, pkgName),
+        ]))
         .catch((e) => {
             console.error(chalk.red(`validate package failed, because of ${e.message}`), e);
             throw new Error('package files is not valied, please check the package.json or main file');
@@ -70,8 +74,12 @@ function installModule(argv) {
         ret = installPkg(name);
     }
 
-    ret.catch((err) => {
-        console.error(chalk.red(err.message), err);
+    ret.then(([pkgDirPath, pkgName]) => {
+        const targetPath = cfgFile.getTargetPkgPath(pkgName);
+
+        return copyEntireDirectory(pkgDirPath, targetPath);
+    }).catch((err) => {
+        console.error(chalk.red(err.message));
     });
 }
 
@@ -83,6 +91,10 @@ function installBuilder(yargs) {
         describe: 'whether the name is a directory or not',
         type: 'boolean',
         default: false,
+    }).option('includeNodeModules', {
+        describe: 'copy the files include node_modules folder',
+        type: 'boolean',
+        default: true,
     });
 }
 

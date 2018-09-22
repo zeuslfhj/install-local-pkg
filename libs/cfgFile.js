@@ -11,6 +11,11 @@ function getCurrentPath() {
     return cwd;
 }
 
+function getTargetPkgPath(pkgName) {
+    const targetPath = path.resolve(getCurrentPath(), 'node_modules', pkgName);
+    return targetPath;
+}
+
 function getCfgFilePath() {
     return path.resolve(getCurrentPath(), CONFIG_FILE);
 }
@@ -81,6 +86,8 @@ function writeDependency(pkgPath, pkgName) {
 
 module.exports = {
     writeDependency,
-    getLocalPackages,
+    getPkgName,
     getCurrentPath,
+    getTargetPkgPath,
+    getLocalPackages,
 };
