@@ -16,7 +16,6 @@ function copyModule(argv) {
             const pkgPath = packages[pkgName];
             const targetPath = getTargetPkgPath(pkgName);
 
-            console.log(chalk.green(`copy file from ${pkgPath} to ${targetPath}`));
             copyEntireDirectory(pkgPath, targetPath, ignoreReg)
                 .catch((e) => {
                     console.error(chalk.red(`copy path failed ${e.message}`), e.stack);
