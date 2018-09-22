@@ -5,20 +5,20 @@ const chalk = require('chalk');
 const shelljs = require('shelljs');
 const { copyEntireDirectory, mkdirFull } = require('./fsUtils');
 
-const stat = util.promisify(fs.stat);
+const stat = util.promisify(fs.lstat);
 const rmdir = util.promisify(fs.rmdir);
 const unlink = util.promisify(fs.unlink);
 const copyFile = util.promisify(fs.copyFile);
 
 function addDir(srcPath, targetPath) {
     stat(srcPath).then((status) => {
+        if (status.isSymbolicLink()) {
+            return copyEntireDirectory(srcPath, targetPath);
+        }
+
         if (status.isDirectory()) {
             mkdirFull(targetPath);
             return Promise.resolve();
-        }
-
-        if (status.isSymbolicLink()) {
-            return copyEntireDirectory(srcPath, targetPath);
         }
 
         return Promise.resolve();

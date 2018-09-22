@@ -3,7 +3,7 @@ const path = require('path');
 const util = require('util');
 const { readJSONFromFile } = require('./utils');
 
-const stat = util.promisify(fs.stat);
+const stat = util.promisify(fs.lstat);
 
 module.exports = {
     getPackageJSONPath(dir) {

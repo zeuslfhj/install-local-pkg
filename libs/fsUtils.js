@@ -5,7 +5,7 @@ const chalk = require('chalk');
 const shelljs = require('shelljs');
 const utils = require('./utils');
 
-const stat = util.promisify(fs.stat);
+const stat = util.promisify(fs.lstat);
 const readdir = util.promisify(fs.readdir);
 const mkdir = util.promisify(fs.mkdir);
 const copyFile = util.promisify(fs.copyFile);
