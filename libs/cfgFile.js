@@ -75,7 +75,7 @@ function writeDependency(pkgPath, pkgName) {
         cfg[tmpPkgName] = pkgPath;
 
         console.log(`write file ${JSON.stringify(cfg)}`);
-        return writeToFile(JSON.stringify(cfg));
+        return writeToFile(JSON.stringify(cfg, null, 4));
     }));
 }
 
