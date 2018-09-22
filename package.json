@@ -3,20 +3,35 @@
     "install-local-pkg": "./index.js"
   },
   "name": "install-local-package",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "install the local package to node_modules",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zeuslfhj/install-local-pkg.git"
+  },
+  "author": "zero <zeuslfhj@gmail.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zeuslfhj/install-local-pkg/issues"
+  },
   "dependencies": {
     "chalk": "^2.4.1",
     "chokidar": "^2.0.4",
     "shelljs": "^0.8.2",
     "yargs": "^12.0.2"
   },
+  "keywords": [
+    "npm",
+    "install",
+    "local",
+    "locally",
+    "package",
+    "react native"
+  ],
   "devDependencies": {
     "eslint": "^5.6.0",
     "eslint-config-airbnb-base": "^13.1.0",
