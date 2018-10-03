@@ -4,7 +4,7 @@ const chalk = require('chalk');
 const utils = require('./utils');
 const cfgFile = require('./cfgFile');
 const pkgUtils = require('./pkgUtils');
-const { copyEntireDirectory } = require('./fsUtils');
+const { copyEntireDirectory, getGitIgnore } = require('./fsUtils');
 
 function validPkgFiles(pkgDirPath) {
     return pkgUtils.parsePackageJSON(pkgDirPath)
@@ -77,9 +77,9 @@ function installModule(argv) {
     ret.then(([pkgDirPath, pkgName]) => {
         const targetPath = cfgFile.getTargetPkgPath(pkgName);
 
-        return copyEntireDirectory(pkgDirPath, targetPath);
+        return copyEntireDirectory(pkgDirPath, targetPath, getGitIgnore());
     }).catch((err) => {
-        console.error(chalk.red(err.message));
+        console.error(chalk.red(err.message), err);
     });
 }
 

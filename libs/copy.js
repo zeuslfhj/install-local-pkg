@@ -1,13 +1,13 @@
 const chalk = require('chalk');
 const { getTargetPkgPath, getLocalPackages } = require('./cfgFile');
-const { copyEntireDirectory } = require('./fsUtils');
+const { copyEntireDirectory, getGitIgnore } = require('./fsUtils');
 
 function copyModule(argv) {
     const { includeNodeModules } = argv;
-    let ignoreReg = null;
+    let ignoreReg = [getGitIgnore()];
 
     if (!includeNodeModules) {
-        ignoreReg = /node_modules/;
+        ignoreReg = [/node_modules/];
     }
 
     const promise = getLocalPackages();

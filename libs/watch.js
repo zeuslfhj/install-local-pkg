@@ -4,13 +4,16 @@ const chokidar = require('chokidar');
 const utils = require('./utils');
 const cfgFile = require('./cfgFile');
 const watchActions = require('./watchActions');
+const { getGitIgnore } = require('./fsUtils');
 
 function getIgnoreReg(includeNodeModules) {
+    const ignores = [getGitIgnore()];
+
     if (!includeNodeModules) {
-        return /\/node_modules(\/|$)/;
+        ignores.push(/\/node_modules(\/|$)/);
     }
 
-    return null;
+    return ignores;
 }
 
 function doAction(event, srcPath, targetPath) {
