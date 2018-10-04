@@ -25,6 +25,8 @@ $ install-local-pkg install dirPath --dir
 
 # watch the changes of packages and sync them
 $ install-local-pkg watch
+# watch the changes of packages but ignore the change file name contains 'a.js'
+$ install-local-pkg watch --ignore a.js
 
 # sync packages
 $ install-local-pkg copy
@@ -39,6 +41,7 @@ Options:
     + ```--includeNodeModules```: copy node_modules directory
 - watch
     + ```--includeNodeModules```: watch and sync the node_modules directory
+    + ```--ignore```: ignore regex for watching
 
 # Why?
 Why installing packages locally? Just because of React Native couldn't work with symlink.

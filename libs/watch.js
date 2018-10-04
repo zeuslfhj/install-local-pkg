@@ -107,7 +107,7 @@ function watchBuilder(yargs) {
         type: 'boolean',
         default: true,
     }).option('ignore', {
-        describe: 'set the ignore files for watching',
+        describe: 'set the ignore regex for watching',
         type: 'string',
     });
 }
