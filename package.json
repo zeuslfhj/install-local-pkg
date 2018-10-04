@@ -3,7 +3,7 @@
     "install-local-pkg": "./index.js"
   },
   "name": "install-local-package",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "install the local package to node_modules",
   "main": "index.js",
   "scripts": {
